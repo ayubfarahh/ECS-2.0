@@ -1,12 +1,5 @@
 - hosts: localhost
   connection: local
-
-  tasks:
-  - amazon.aws.s3_bucket:
-      name: ecsv2-bucket29
-      state: present
-      encryption: "AES256"
-
-  - name: create-ecr-repo
-    community.aws.ecs_ecr:
-      name: ecsv2
+  roles:
+   - boot-role
+  
