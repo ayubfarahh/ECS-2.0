@@ -13,3 +13,13 @@ variable "ecr_image_url" {
   description = "Full ECR image URL"
   type        = string
 }
+
+variable "ecs_execution_role_arn" {
+  description = "The ECS execution role ARN"
+  type        = string
+}
+
+variable "private_subnet_ids" {
+  description = "List of private subnet IDs"
+  type        = list(string)
+}

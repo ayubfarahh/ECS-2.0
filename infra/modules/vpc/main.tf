@@ -50,12 +50,19 @@ resource "aws_route_table" "private_rt" {
 }
 
 resource "aws_route_table_association" "pub_asso" {
-  subnet_id      = aws_subnet.public
-  route_table_id = aws_route_table.public_rt
+  for_each = {
+    for k, v in local.subnets : k => v if v.type == "public"
+  }
+  
+  subnet_id      = aws_subnet.public[each.key].id
+  route_table_id = aws_route_table.public_rt.id
 }
 
 resource "aws_route_table_association" "priv_asso" {
-  subnet_id      = aws_subnet.private
+  for_each = {
+    for k, v in local.subnets : k => v if v.type == "private"
+  }
+  subnet_id      = aws_subnet.private[each.key].id
   route_table_id = aws_route_table.private_rt.id
 }
 
