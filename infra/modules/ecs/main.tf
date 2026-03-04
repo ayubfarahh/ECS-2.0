@@ -59,8 +59,7 @@ resource "aws_security_group" "ecs_sg" {
 resource "aws_ecs_service" "service" {
   name            = "ecsv2-service"
   cluster         = aws_ecs_cluster.cluster.id
-  ## creatre task def next
-  task_definition = aws_ecs_task_definition.task.arn
+  task_definition = var.task_role_arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
@@ -71,7 +70,7 @@ resource "aws_ecs_service" "service" {
   }
 
    load_balancer {
-    target_group_arn = aws_lb_target_group.foo.arn
+    target_group_arn = ##
     container_name   = "ecsv2-container"
     container_port   = 8080
   }

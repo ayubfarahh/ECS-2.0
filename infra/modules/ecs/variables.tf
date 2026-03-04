@@ -23,3 +23,8 @@ variable "private_subnet_ids" {
   description = "List of private subnet IDs"
   type        = list(string)
 }
+
+variable "task_role_arn" {
+  description = "The task role ARN"
+  type        = string
+}
