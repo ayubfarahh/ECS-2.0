@@ -28,3 +28,8 @@ variable "task_role_arn" {
   description = "The task role ARN"
   type        = string
 }
+
+variable "dynamodb_table_name" {
+  description = "The name of the DynamoDB table"
+  type        = string
+}

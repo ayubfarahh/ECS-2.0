@@ -31,6 +31,12 @@ resource "aws_ecs_task_definition" "task" {
           protocol      = "tcp"
         }
       ]
+      environment = [
+        {
+          name = "DYNAMODB_TABLE_NAME"
+          value = var.dynamodb_table_name
+        }
+      ]
     }
   ])
   
