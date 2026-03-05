@@ -32,10 +32,15 @@ module "alb" {
   source            = "./modules/alb"
   public_subnet_ids = module.vpc.public_subnet_ids
   vpc_id            = module.vpc.vpc_id
+  certificate_arn   = module.acm.certificate_arn 
 }
 
 module "route53" {
   source = "./modules/route53"
   alb_dns_name = module.alb.alb_dns_name
   alb_zone_id  = module.alb.alb_zone_id
+}
+
+module "acm" {
+  source = "./modules/acm"
 }
