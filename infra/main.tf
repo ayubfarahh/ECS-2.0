@@ -1,5 +1,6 @@
 module "vpc" {
   source = "./modules/vpc"
+  ecs_sg_id = module.ecs.ecs_sg
 }
 
 module "ecs" {
@@ -9,15 +10,26 @@ module "ecs" {
   ecr_image_url          = var.ecr_image_url
   ecs_execution_role_arn = module.iam.ecs_tasks_execution_role_arn
   private_subnet_ids     = module.vpc.private_subnet_ids
-  task_role_arn         = module.iam.task_role_arn 
-  dynamodb_table_name   = module.dynamodb.dynamodb_table_name
+  task_role_arn          = module.iam.task_role_arn
+  dynamodb_table_name    = module.dynamodb.dynamodb_table_name
+  target_group_arn       = module.alb.target_group_arn
 }
 
 module "iam" {
-  source = "./modules/iam"
+  source              = "./modules/iam"
   dynamodb_table_name = module.dynamodb.dynamodb_table_name
 }
 
 module "cloudwatch" {
   source = "./modules/cloudwatch"
+}
+
+module "dynamodb" {
+  source = "./modules/dynamodb"
+}
+
+module "alb" {
+  source            = "./modules/alb"
+  public_subnet_ids = module.vpc.public_subnet_ids
+  vpc_id            = module.vpc.vpc_id
 }

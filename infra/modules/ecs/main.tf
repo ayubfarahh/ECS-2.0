@@ -76,7 +76,7 @@ resource "aws_ecs_service" "service" {
   }
 
    load_balancer {
-    target_group_arn = ##
+    target_group_arn = var.target_group_arn
     container_name   = "ecsv2-container"
     container_port   = 8080
   }

@@ -46,7 +46,6 @@ resource "aws_route_table" "public_rt" {
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.main.id
 
-  
 }
 
 resource "aws_route_table_association" "pub_asso" {
@@ -66,4 +65,63 @@ resource "aws_route_table_association" "priv_asso" {
   route_table_id = aws_route_table.private_rt.id
 }
 
+## SG FOR ENDPOINTS
 
+resource "aws_security_group" "endpoint_sg" {
+  name        = "endpoint-sg"
+  description = "Security group for VPC endpoints"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.ecs_sg_id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}
+
+## ENDPOINTS
+
+resource "aws_vpc_endpoint" "dynamodb" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.eu-west-2.dynamodb"
+  vpc_endpoint_type = "Gateway"
+}
+
+resource "aws_vpc_endpoint_route_table_association" "dynamodb" {  
+  for_each = {
+    for k, v in local.subnets : k => v if v.type == "private"
+
+  }
+  route_table_id = aws_route_table.private_rt.id
+  vpc_endpoint_id = aws_vpc_endpoint.dynamodb.id
+  
+}
+
+resource "aws_vpc_endpoint" "ecr-api" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.eu-west-2.ecr.api"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = [for subnet in aws_subnet.private : subnet.id]
+  security_group_ids = [aws_security_group.endpoint_sg.id]
+  private_dns_enabled = true
+  
+}
+
+resource "aws_vpc_endpoint" "ecr-dkr" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.eu-west-2.ecr.dkr"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = [for subnet in aws_subnet.private : subnet.id]
+  security_group_ids = [aws_security_group.endpoint_sg.id]
+  private_dns_enabled = true
+  
+}

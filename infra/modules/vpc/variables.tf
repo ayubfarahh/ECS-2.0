@@ -24,3 +24,9 @@ locals {
     }
   }
 }
+
+variable "ecs_sg_id" {
+    description = "Security group ID for ECS tasks"
+    type        = string
+  
+}

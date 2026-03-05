@@ -33,3 +33,8 @@ variable "dynamodb_table_name" {
   description = "The name of the DynamoDB table"
   type        = string
 }
+
+variable "target_group_arn" {
+  description = "The ARN of the target group to attach to the ALB listener"
+  type        = string
+}
