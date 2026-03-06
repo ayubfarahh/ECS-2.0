@@ -4,10 +4,11 @@ resource "aws_lb" "alb" {
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = var.public_subnet_ids
 
-  access_logs {
-    bucket  = "alb-access-logs-bucket-24"
-    enabled = true
-  }
+  # GRANT PERMISSION TO WRITE ACCESS LOGS TO S3 BUCKET
+  # access_logs {
+  #   bucket  = "alb-access-logs-bucket-24"
+  #   enabled = true
+  # }
 }
 
 
@@ -60,7 +61,6 @@ resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.alb.arn
   port              = "80"
   protocol          = "HTTP"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
   
 
   default_action {

@@ -19,9 +19,9 @@ resource "aws_iam_role_policy_attachment" "ecs_tasks_execution_role" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-
+## 
 data "aws_iam_policy_document" "task_role_dynamodb" {
-  statement { 
+  statement {
     effect = "Allow"
     actions = [
       "dynamodb:PutItem",
@@ -34,8 +34,24 @@ data "aws_iam_policy_document" "task_role_dynamodb" {
     resources = [
       "arn:aws:dynamodb:eu-west-2:940622738555:table/${var.dynamodb_table_name}"
     ]
-  
-    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:BatchGetImage",
+      "ecr:GetDownloadUrlForLayer"
+    ]
+    resources = [
+      "arn:aws:ecr:eu-west-2:940622738555:repository/ecsv2"
+    ]
+  }
 }
 
 resource "aws_iam_role" "task_role" {

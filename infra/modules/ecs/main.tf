@@ -17,28 +17,37 @@ resource "aws_ecs_task_definition" "task" {
   cpu                      = "256"
   memory                   = "512"
   execution_role_arn = var.ecs_execution_role_arn
+  task_role_arn = var.task_role_arn
 
 
   container_definitions = jsonencode([
-    {
-      name      = "ecsv2-container"
-      image     = var.ecr_image_url
-      essential = true
-      portMappings = [
-        {
-          containerPort = 8080
-          hostPort      = 8080
-          protocol      = "tcp"
-        }
-      ]
-      environment = [
-        {
-          name = "DYNAMODB_TABLE_NAME"
-          value = var.dynamodb_table_name
-        }
-      ]
+  {
+    name      = "ecsv2-container"
+    image     = var.ecr_image_url
+    essential = true
+    portMappings = [
+      {
+        containerPort = 8080
+        hostPort      = 8080
+        protocol      = "tcp"
+      }
+    ]
+    environment = [
+      {
+        name  = "DYNAMODB_TABLE_NAME"
+        value = var.dynamodb_table_name
+      }
+    ]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = var.log_group_name
+        "awslogs-region"        = "eu-west-2"
+        "awslogs-stream-prefix" = "ecs"
+      }
     }
-  ])
+  }
+])
   
 }
 
@@ -65,7 +74,7 @@ resource "aws_security_group" "ecs_sg" {
 resource "aws_ecs_service" "service" {
   name            = "ecsv2-service"
   cluster         = aws_ecs_cluster.cluster.id
-  task_definition = var.task_role_arn
+  task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 

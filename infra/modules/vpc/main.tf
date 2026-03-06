@@ -1,5 +1,7 @@
 resource "aws_vpc" "main" {
     cidr_block = "10.0.0.0/16"
+    enable_dns_support = true
+    enable_dns_hostnames = true
   
 }
 
@@ -76,7 +78,7 @@ resource "aws_security_group" "endpoint_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [var.ecs_sg_id]
+    security_groups = [var.ecs_sg_id]
   }
 
   egress {
@@ -106,6 +108,23 @@ resource "aws_vpc_endpoint_route_table_association" "dynamodb" {
   
 }
 
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id       = aws_vpc.main.id
+  service_name = "com.amazonaws.eu-west-2.s3"
+  vpc_endpoint_type = "Gateway"
+  
+}
+
+resource "aws_vpc_endpoint_route_table_association" "s3" {
+  for_each = {
+    for k, v in local.subnets : k => v if v.type == "private"
+
+  }
+  route_table_id = aws_route_table.private_rt.id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
+  
+}
+
 resource "aws_vpc_endpoint" "ecr-api" {
   vpc_id       = aws_vpc.main.id
   service_name = "com.amazonaws.eu-west-2.ecr.api"
@@ -124,4 +143,13 @@ resource "aws_vpc_endpoint" "ecr-dkr" {
   security_group_ids = [aws_security_group.endpoint_sg.id]
   private_dns_enabled = true
   
+}
+
+resource "aws_vpc_endpoint" "cloudwatch" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.eu-west-2.logs"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = [for subnet in aws_subnet.private : subnet.id]
+  security_group_ids  = [aws_security_group.endpoint_sg.id]
+  private_dns_enabled = true
 }
