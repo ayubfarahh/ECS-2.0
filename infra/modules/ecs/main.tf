@@ -34,7 +34,7 @@ resource "aws_ecs_task_definition" "task" {
     ]
     environment = [
       {
-        name  = "DYNAMODB_TABLE_NAME"
+        name  = "TABLE_NAME"
         value = var.dynamodb_table_name
       }
     ]

@@ -2,8 +2,15 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import RedirectResponse
 import os, hashlib, time
 from .ddb import put_mapping, get_mapping
+from fastapi.responses import HTMLResponse
+from pathlib import Path
+
 
 app = FastAPI()
+
+@app.get("/", response_class=HTMLResponse)
+def index():
+    return Path(__file__).parent / "index.html"
 
 @app.get("/healthz")
 def health():
