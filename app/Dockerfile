@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 copy . .
 
-FROM gcr.io/distroless/python3-debian12
+FROM python:3.13-slim
 
 WORKDIR /app
 
