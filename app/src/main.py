@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/", response_class=HTMLResponse)
 def index():
-    return Path(__file__).parent / "index.html"
+    return (Path(__file__).parent / "index.html").read_text()
 
 @app.get("/healthz")
 def health():

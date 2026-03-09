@@ -4,11 +4,11 @@ resource "aws_lb" "alb" {
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = var.public_subnet_ids
 
-  # GRANT PERMISSION TO WRITE ACCESS LOGS TO S3 BUCKET
-  # access_logs {
-  #   bucket  = "alb-access-logs-bucket-24"
-  #   enabled = true
-  # }
+  
+  access_logs {
+    bucket  = "alb-access-logs-bucket-24"
+    enabled = true
+  }
 }
 
 
