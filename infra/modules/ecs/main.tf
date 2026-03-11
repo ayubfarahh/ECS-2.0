@@ -78,6 +78,10 @@ resource "aws_ecs_service" "service" {
   desired_count   = 1
   launch_type     = "FARGATE"
 
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
+
   network_configuration {
     subnets         = var.private_subnet_ids
     security_groups = [aws_security_group.ecs_sg.id]
@@ -88,6 +92,10 @@ resource "aws_ecs_service" "service" {
     target_group_arn = var.target_group_arn
     container_name   = "ecsv2-container"
     container_port   = 8080
+  }
+
+  lifecycle {
+    ignore_changes = [ task_definition, load_balancer, desired_count ]
   }
 }
 

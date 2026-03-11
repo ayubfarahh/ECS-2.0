@@ -55,6 +55,22 @@ resource "aws_lb_target_group" "alb_target_group" {
   
 }
 
+resource "aws_lb_target_group" "green_target_group" {
+  name     = "green-target-group"
+  port     = 8080
+  protocol = "HTTP"
+  target_type = "ip"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    path                = "/healthz"
+    protocol            = "HTTP"
+    interval            = 30
+    matcher             = "200-299"
+  }
+  
+}
+
 
 
 resource "aws_lb_listener" "http" {
@@ -88,4 +104,15 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.alb_target_group.arn
   }
 
+}
+
+resource "aws_lb_listener" "test" {
+  load_balancer_arn = aws_lb.alb.arn
+  port = "8080"
+  protocol = "HTTP"
+
+  default_action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.green_target_group.arn  
+  }
 }

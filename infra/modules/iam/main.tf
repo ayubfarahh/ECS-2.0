@@ -1,3 +1,25 @@
+data "aws_iam_policy_document" "code_deploy_policy_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "Service"
+      identifiers = ["codedeploy.amazonaws.com"]
+    }
+  }
+  
+}
+
+resource "aws_iam_role" "code_deploy_role" {
+  name               = "code-deploy-role"
+  assume_role_policy = data.aws_iam_policy_document.code_deploy_policy_role.json  
+}
+
+resource "aws_iam_role_policy_attachment" "code_deploy_policy_role_attachment" {
+  role       = aws_iam_role.code_deploy_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForECS"
+}
+
 data "aws_iam_policy_document" "ecs_tasks_execution_role" {
   statement {
     actions = ["sts:AssumeRole"]
