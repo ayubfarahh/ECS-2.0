@@ -17,7 +17,7 @@ resource "aws_iam_role" "code_deploy_role" {
 
 resource "aws_iam_role_policy_attachment" "code_deploy_policy_role_attachment" {
   role       = aws_iam_role.code_deploy_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForECS"
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
 }
 
 data "aws_iam_policy_document" "ecs_tasks_execution_role" {

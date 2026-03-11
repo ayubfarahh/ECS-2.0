@@ -104,6 +104,10 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.alb_target_group.arn
   }
 
+   lifecycle {
+    ignore_changes = [default_action]
+  }
+
 }
 
 resource "aws_lb_listener" "test" {

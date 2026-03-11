@@ -1,9 +1,9 @@
-output "target_group_arn" {
-  value = aws_lb_target_group.alb_target_group.arn
+output "target_group_name" {
+  value = aws_lb_target_group.alb_target_group.name
 }
 
-output "green_target_group_arn" {
-  value = aws_lb_target_group.green_target_group.arn
+output "green_target_group_name" {
+  value = aws_lb_target_group.green_target_group.name
 }
 
 output "alb_dns_name" {
@@ -24,4 +24,8 @@ output "https_listener_arn" {
 
 output "test_listener_arn" {
   value = aws_lb_listener.test.arn
+}
+
+output "target_group_arn" {
+  value = aws_lb_target_group.alb_target_group.arn
 }

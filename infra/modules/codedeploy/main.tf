@@ -6,7 +6,7 @@ resource "aws_codedeploy_app" "main" {
 
 resource "aws_codedeploy_deployment_group" "deployment-group" {
     app_name = aws_codedeploy_app.main.name
-    deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
+    deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
     deployment_group_name = "url-shortener-deployment-group"
     service_role_arn = var.code_deploy_role_arn
 
@@ -47,11 +47,11 @@ resource "aws_codedeploy_deployment_group" "deployment-group" {
         }
 
         target_group {
-          name = var.target_group_arn
+          name = var.target_group_name
         }
 
         target_group {
-          name = var.green_target_group_arn
+          name = var.green_target_group_name
         }
       }
     }

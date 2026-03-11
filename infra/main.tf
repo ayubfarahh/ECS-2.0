@@ -55,8 +55,8 @@ module "codedeploy" {
   code_deploy_role_arn = module.iam.code_deploy_role_arn
   ecs_cluster_name = module.ecs.ecs_cluster_name
   ecs_service_name = module.ecs.ecs_service_name
-  target_group_arn = module.alb.target_group_arn
+  target_group_name = module.alb.target_group_name
   https_listener_arn = module.alb.https_listener_arn
   test_listener_arn = module.alb.test_listener_arn
-  green_target_group_arn = module.alb.green_target_group_arn
+  green_target_group_name = module.alb.green_target_group_name
 }

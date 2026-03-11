@@ -10,11 +10,11 @@ variable "ecs_service_name" {
   type = string
 }
 
-variable "target_group_arn" {
+variable "target_group_name" {
   type = string
 }
 
-variable "green_target_group_arn" {
+variable "green_target_group_name" {
   type = string
 }
 
