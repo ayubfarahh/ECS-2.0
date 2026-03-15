@@ -3,6 +3,16 @@ name: Build And Push Image
 on: 
     workflow_dispatch:
 
+env:
+    ECR_REPOSITORY: ecsv2
+    AWS_REGION: eu-west-2
+
+## OIDC Perms instead of long lived keys
+
+permissions:
+    id-token: write
+    contents: read
+
 jobs:
     build-and-push:
         runs-on: ubuntu-latest
@@ -11,3 +21,25 @@ jobs:
         steps:
         - name: Checkout code
           uses: actions/checkout@v3
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-assume: arn:aws:iam::940622738555:role/github-actions-role
+            aws-region: ${{ env.AWS_REGION }}
+        
+        - name: Login to ECR
+          id: login-ecr
+          uses: aws-actions/amazon-ecr-login@v2
+
+        - name: Set up Docker
+          uses: docker/setup-docker-action@v5 
+
+        - name: Build Docker image
+          run: |
+            docker build  -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest ./app
+        
+        - name: Push Docker Image
+          run: |
+            docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+        
