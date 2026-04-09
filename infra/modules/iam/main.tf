@@ -133,3 +133,40 @@ resource "aws_iam_role" "github_actions_role" {
   name               = "github-actions-role"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
 }
+
+## perm for github actions to use ECR and do stuff
+
+data "aws_iam_policy_document" "github_actions_ecr" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:GetAuthorizationToken"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+       "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:CompleteLayerUpload",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart"
+    ]
+    resources = [
+      "arn:aws:ecr:eu-west-2:940622738555:repository/ecsv2"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "github_actions_ecr" {
+  name   = "github-actions-ecr-policy"
+  policy = data.aws_iam_policy_document.github_actions_ecr.json
+}
+
+resource "aws_iam_role_policy_attachment" "github_actions_ecr" {
+  role       = aws_iam_role.github_actions_role.name
+  policy_arn = aws_iam_policy.github_actions_ecr.arn
+}
