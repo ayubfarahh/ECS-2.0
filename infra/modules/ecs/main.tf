@@ -9,7 +9,7 @@ resource "aws_ecs_cluster" "cluster" {
 }
 
 
-# add cloudwatch log group later 
+
 resource "aws_ecs_task_definition" "task" {
   family                   = "ecsv2-task"
   network_mode             = "awsvpc"
@@ -94,6 +94,7 @@ resource "aws_ecs_service" "service" {
     container_port   = 8080
   }
 
+  ## something to do with codedeploy..  | It changes these things leading to drift 
   lifecycle {
     ignore_changes = [ task_definition, load_balancer, desired_count ]
   }
