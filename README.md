@@ -12,7 +12,7 @@ This project provisions and deploys a containerised URL shortener service to AWS
 ### Architecture
 
 ```
-![alt text!](/img/v2?.png)
+![alt text!](/img/v2.png)
 
 ```
 
