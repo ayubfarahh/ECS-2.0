@@ -1,4 +1,4 @@
-# ecsv2 — URL Shortener on AWS ECS
+# URL Shortener on AWS ECS
 
 A production-grade URL shortener built with FastAPI, deployed on AWS ECS Fargate with blue/green deployments, Terraform-managed infrastructure, and a GitHub Actions CI/CD pipeline.
 
