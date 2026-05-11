@@ -88,7 +88,7 @@ curl -X POST https://ecsv2.ayubs.uk/shorten \
 
 The GitHub Actions workflow uses **OIDC** (no long-lived AWS keys) to assume an IAM role and push images to ECR. It is triggered manually via `workflow_dispatch`.
 
-To use it, ensure the `github-actions-role` IAM role in your AWS account has the correct trust policy for your repository (configured in `infra/modules/iam/main.tf`).
+![alt text!](/img/pipe.png)
 
 ---
 
