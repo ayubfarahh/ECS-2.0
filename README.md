@@ -11,26 +11,8 @@ This project provisions and deploys a containerised URL shortener service to AWS
 
 ### Architecture
 
-```
+
 ![alt text!](/img/v2.png)
-
-```
-
-**Key AWS services used:**
-
-- **ECS Fargate** — serverless container runtime
-- **ECR** — container image registry
-- **DynamoDB** — URL mapping store 
-- **ALB** — HTTPS load balancer with blue/green target groups
-- **CodeDeploy** — canary blue/green deployments
-- **WAF** — IP reputation list + rate limiting (100 req/IP)
-- **ACM** — TLS certificate for `ecsv2.ayubs.uk`
-- **Route53** — DNS alias to ALB
-- **CloudWatch** — container logs 
-- **VPC Endpoints** — private connectivity to DynamoDB, S3, ECR, and CloudWatch (no NAT gateway needed)
-
----
-
 
 
 ## Prerequisites
