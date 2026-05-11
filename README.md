@@ -8,6 +8,7 @@ A production-grade URL shortener built with FastAPI, deployed on AWS ECS Fargate
 
 This project provisions and deploys a containerised URL shortener service to AWS. Short URLs are stored in DynamoDB and resolved via redirect. The service runs on ECS Fargate behind an HTTPS Application Load Balancer, with WAF protection and blue/green deployments via CodeDeploy.
 
+![alt text!](/img/site.png)
 
 ### Architecture
 
@@ -60,7 +61,9 @@ terraform apply -var="ecr_image_url=<account_id>.dkr.ecr.eu-west-2.amazonaws.com
 
 ### 4. Deploy a New Version
 
-Deployments use CodeDeploy's **canary strategy** (10% traffic shifted first, then 100% after 5 minutes). To trigger a deployment, update `infra/task-def.json` with the new image tag and run a CodeDeploy deployment via the AWS Console or CLI.
+Deployments use CodeDeploy's **canary strategy** (10% traffic shifted first, then 100% after 5 minutes). 
+
+![alt text!](/img/deploy.png)
 
 Auto-rollback is enabled on deployment failure.
 
