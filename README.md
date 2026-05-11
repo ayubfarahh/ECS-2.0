@@ -10,10 +10,12 @@ This project provisions and deploys a containerised URL shortener service to AWS
 
 ![alt text!](/img/site.png)
 
+---
 ### Architecture
 
 
 ![alt text!](/img/v2.png)
+
 
 
 ## Prerequisites
