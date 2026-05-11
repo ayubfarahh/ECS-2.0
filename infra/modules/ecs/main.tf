@@ -94,7 +94,7 @@ resource "aws_ecs_service" "service" {
     container_port   = 8080
   }
 
-  ## something to do with codedeploy..  | It changes these things leading to drift 
+  ## something to do with codedeploy..  | It changes these things leading to drift so you wanna ingore them 
   lifecycle {
     ignore_changes = [ task_definition, load_balancer, desired_count ]
   }
